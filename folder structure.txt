@@ -1,0 +1,71 @@
+i:/fitness_tracker/
+├── index.html
+├── package.json
+├── vite.config.js
+├── eslint.config.js
+├── README.md
+└── src/
+    ├── main.jsx
+    ├── App.jsx
+    ├── index.css
+    ├── styles/
+    │   ├── global.css        # Palette variables, resets, custom scrollbars, animations
+    │   ├── layout.css        # Responsive sidebar, navbar, drawers, flyouts
+    │   ├── components.css    # Buttons, inputs, modals, cards, tabs, badges, tables
+    │   └── pages.css         # Page layouts for Dashboard, Workouts, Diet, Goals, etc.
+    ├── context/
+    │   ├── AuthContext.jsx   # Authentication, user profile, login, register, logout
+    │   ├── FitnessContext.jsx# Workouts, meals, goals, schedules, progress, active timer
+    │   └── ThemeContext.jsx  # Units (kg/lbs, cm/ft), accent colors, dark mode
+    ├── data/
+    │   └── mockData.js       # Curated Unsplash images, workouts, meals, vitals, goals
+    ├── utils/
+    │   ├── localStorage.js   # Safe getItem, setItem, removeItem helpers
+    │   └── exportUtils.js    # CSV generation and browser download utilities
+    ├── components/
+    │   ├── common/
+    │   │   ├── Button.jsx
+    │   │   ├── Input.jsx
+    │   │   ├── Modal.jsx
+    │   │   ├── ProgressBar.jsx
+    │   │   ├── CircularProgress.jsx
+    │   │   ├── MetricCard.jsx
+    │   │   ├── ChartCard.jsx
+    │   │   ├── NotificationItem.jsx
+    │   │   ├── SearchBar.jsx
+    │   │   ├── UserAvatar.jsx
+    │   │   └── ProtectedRoute.jsx
+    │   ├── layout/
+    │   │   ├── Sidebar.jsx
+    │   │   ├── Navbar.jsx
+    │   │   └── DashboardLayout.jsx
+    │   ├── workouts/
+    │   │   ├── WorkoutCard.jsx
+    │   │   ├── WorkoutDetailsModal.jsx
+    │   │   ├── WorkoutFormModal.jsx
+    │   │   └── ActiveSessionModal.jsx
+    │   ├── nutrition/
+    │   │   ├── FoodCard.jsx
+    │   │   ├── MealDetailsModal.jsx
+    │   │   └── MealFormModal.jsx
+    │   ├── goals/
+    │   │   └── GoalFormModal.jsx
+    │   ├── schedule/
+    │   │   └── ScheduleFormModal.jsx
+    │   └── progress/
+    │       └── ProgressFormModal.jsx
+    └── pages/
+        ├── Dashboard.jsx
+        ├── Workouts.jsx
+        ├── WorkoutManagement.jsx
+        ├── DietPlan.jsx
+        ├── Goals.jsx
+        ├── Schedule.jsx
+        ├── Progress.jsx
+        ├── Profile.jsx
+        ├── Settings.jsx
+        ├── Notifications.jsx
+        ├── Reports.jsx
+        ├── Login.jsx
+        ├── Register.jsx
+        └── ForgotPassword.jsx
