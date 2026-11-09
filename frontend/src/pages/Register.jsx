@@ -27,7 +27,9 @@ export const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
       setError('Please fill in all required fields.');
@@ -46,13 +48,19 @@ export const Register = () => {
       return;
     }
 
-    const res = register({
+    setError('');
+    setLoading(true);
+    const res = await register({
       name: formData.name,
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
     });
+    setLoading(false);
     if (res.success) {
       navigate('/dashboard');
+    } else {
+      setError(res.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -160,8 +168,8 @@ export const Register = () => {
             </label>
           </div>
 
-          <Button variant="primary" type="submit" size="lg" style={{ width: '100%' }}>
-            Create Athlete Account
+          <Button variant="primary" type="submit" size="lg" style={{ width: '100%' }} disabled={loading}>
+            {loading ? 'Creating Account...' : 'Create Athlete Account'}
           </Button>
         </form>
 

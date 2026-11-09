@@ -26,6 +26,7 @@ import {
 import { useFitness } from '../context/FitnessContext';
 import { useAuth } from '../context/AuthContext';
 import { exportToCSV, triggerPrint } from '../utils/exportUtils';
+import { reportService } from '../services/reportService';
 import { Button } from '../components/common/Button';
 
 export const Reports = () => {
@@ -50,35 +51,41 @@ export const Reports = () => {
   const totalLoss = (startingWeight - latestWeight).toFixed(1);
 
   // Handle Export CSV
-  const handleExportCSV = () => {
-    // Compile workout & progress dataset for export
-    const exportData = userWorkouts.map((w) => ({
-      Date: w.date,
-      WorkoutName: w.workoutName,
-      Exercise: w.exerciseName,
-      Category: w.category,
-      Sets: w.sets,
-      Reps: w.reps,
-      WeightKg: w.weight,
-      DurationMins: w.duration,
-      Notes: w.notes
-    }));
-
-    exportToCSV(exportData, `fitnexus-workout-report-${new Date().toISOString().split('T')[0]}.csv`);
+  const handleExportCSV = async () => {
+    try {
+      await reportService.downloadWorkoutsCSV();
+    } catch (err) {
+      // Fallback to client-side CSV export
+      const exportData = userWorkouts.map((w) => ({
+        Date: w.date,
+        WorkoutName: w.workoutName,
+        Exercise: w.exerciseName,
+        Category: w.category,
+        Sets: w.sets,
+        Reps: w.reps,
+        WeightKg: w.weight,
+        DurationMins: w.duration,
+        Notes: w.notes,
+      }));
+      exportToCSV(exportData, `fitnexus-workout-report-${new Date().toISOString().split('T')[0]}.csv`);
+    }
   };
 
-  const handleExportNutritionCSV = () => {
-    const mealData = loggedMeals.map((m) => ({
-      MealName: m.name,
-      Category: m.mealType,
-      Calories: m.calories,
-      ProteinGrams: m.protein,
-      CarbsGrams: m.carbs,
-      FatsGrams: m.fats,
-      Portion: m.quantity
-    }));
-
-    exportToCSV(mealData, `fitnexus-nutrition-report-${new Date().toISOString().split('T')[0]}.csv`);
+  const handleExportNutritionCSV = async () => {
+    try {
+      await reportService.downloadNutritionCSV();
+    } catch (err) {
+      const mealData = loggedMeals.map((m) => ({
+        MealName: m.name || m.foodName,
+        Category: m.mealType,
+        Calories: m.calories,
+        ProteinGrams: m.protein,
+        CarbsGrams: m.carbohydrates || m.carbs,
+        FatsGrams: m.fats,
+        Portion: m.quantity,
+      }));
+      exportToCSV(mealData, `fitnexus-nutrition-report-${new Date().toISOString().split('T')[0]}.csv`);
+    }
   };
 
   return (

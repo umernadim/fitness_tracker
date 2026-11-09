@@ -14,22 +14,35 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setError('Please fill in both email and password.');
       return;
     }
-    const result = login(email, password);
+    setError('');
+    setLoading(true);
+    const result = await login(email, password);
+    setLoading(false);
     if (result.success) {
       navigate('/dashboard');
+    } else {
+      setError(result.message || 'Invalid email or password.');
     }
   };
 
-  const handleDemoLogin = () => {
-    login('alex.rivera@fitnexus.io', 'demo1234');
-    navigate('/dashboard');
+  const handleDemoLogin = async () => {
+    setError('');
+    setLoading(true);
+    const result = await login('alex.rivera@fitnexus.io', 'password123');
+    setLoading(false);
+    if (result.success) {
+      navigate('/dashboard');
+    } else {
+      setError(result.message || 'Could not log in to demo account.');
+    }
   };
 
   return (
@@ -124,8 +137,8 @@ export const Login = () => {
             </label>
           </div>
 
-          <Button variant="primary" type="submit" size="lg" style={{ width: '100%' }}>
-            Sign In to Dashboard
+          <Button variant="primary" type="submit" size="lg" style={{ width: '100%' }} disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In to Dashboard'}
           </Button>
         </form>
 
